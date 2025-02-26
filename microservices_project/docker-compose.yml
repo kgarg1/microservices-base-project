@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  auth-service:
+    build:
+      context: "${PWD}/../auth-service"
+    ports:
+      - "5000:5000"
+  product-service:
+    build:
+      context: "${PWD}/../product-service"
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo
+  api-gateway:
+    build:
+      context: "${PWD}/../api-gateway"
+    ports:
+      - "3030:3030"
+    depends_on:
+      - auth-service
+      - product-service
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+  frontend:
+    build:
+      context: "${PWD}/../frontend"
+    ports:
+      - "3000:3000"
